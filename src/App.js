@@ -19,6 +19,7 @@ function App() {
 
 	const getProductsCart = () => {
 		const idsProducts = localStorage.getItem(STORAGE_PRODUCTS_CART);
+
 		if (idsProducts) {
 			const idsProductsSplit = idsProducts.split(',');
 			setProductsCart(idsProductsSplit);
