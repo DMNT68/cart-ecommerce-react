@@ -145,7 +145,7 @@ function CartContentProducts(props) {
 	if (!loading && result) {
 		return result.map((product, index) => {
 			if (idProductCart == product.id) {
-				const quantity = countDuplicatesItemArray(product.id, idsProductsCart);
+				const quantity = countDuplicatesItemArray(idProductCart, idsProductsCart);
 				return (
 					<RenderProduct
 						key={index}
