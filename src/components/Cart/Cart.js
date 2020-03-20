@@ -44,19 +44,19 @@ export default function Cart(props) {
 			};
 
 			productData.push(productValue);
-
-			if (!products.loading && products.result) {
-				products.result.forEach(product => {
-					productData.forEach(item => {
-						if (product.id === item.id) {
-							const totalValue = product.price * quantity;
-							totalPrice = totalPrice + totalValue;
-						}
-					});
-				});
-			}
-			setCartTotalPrice(totalPrice);
 		});
+
+		if (!products.loading && products.result) {
+			products.result.forEach(product => {
+				productData.forEach(item => {
+					if (product.id == item.id) {
+						const totalValue = product.price * item.quantity;
+						totalPrice = totalPrice + totalValue;
+					}
+				});
+			});
+		}
+		setCartTotalPrice(totalPrice);
 	}, [productsCart, products]);
 
 	const openCart = () => {
@@ -104,7 +104,7 @@ export default function Cart(props) {
 						<CartContentProducts
 							key={index}
 							products={products}
-							idProductsCart={productsCart}
+							idsProductsCart={productsCart}
 							idProductCart={idProductCart}
 							increaseQuantity={increaseQuantity}
 							decreaseQuantity={decreaseQuantity}
@@ -142,9 +142,9 @@ function CartContentProducts(props) {
 		decreaseQuantity
 	} = props;
 
-	if (!loading || result) {
+	if (!loading && result) {
 		return result.map((product, index) => {
-			if (idProductCart === product.id) {
+			if (idProductCart == product.id) {
 				const quantity = countDuplicatesItemArray(product.id, idsProductsCart);
 				return (
 					<RenderProduct
@@ -168,14 +168,16 @@ function RenderProduct(props) {
 		<div className="cart-content__product">
 			<img src={`${BASE_PATH}/${product.image}`} alt={product.name} />
 			<div className="cart-content__product-info">
-				<h3>{product.name.substr(0, 25)}...</h3>
-				<p>{product.price.toFixed(2)} $/ ud.</p>
-			</div>
-			<div>
-				<p>En carro: {quantity} ud.</p>
 				<div>
-					<button onClick={() => increaseQuantity(product.id)}>+</button>
-					<button onClick={() => decreaseQuantity(product.id)}>-</button>
+					<h3>{product.name.substr(0, 25)}...</h3>
+					<p>{product.price.toFixed(2)} € / ud.</p>
+				</div>
+				<div>
+					<p>En carro: {quantity} ud.</p>
+					<div>
+						<button onClick={() => increaseQuantity(product.id)}>+</button>
+						<button onClick={() => decreaseQuantity(product.id)}>-</button>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -184,11 +186,12 @@ function RenderProduct(props) {
 
 function CartContentFooter(props) {
 	const { cartTotalPrice } = props;
+
 	return (
 		<div className="cart-content__footer">
 			<div>
 				<p>Total aproximado: </p>
-				<p>$ {cartTotalPrice.toFixed(2)}</p>
+				<p>{cartTotalPrice.toFixed(2)} €</p>
 			</div>
 			<Button>Tramitar pedido</Button>
 		</div>
